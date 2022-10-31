@@ -1,0 +1,157 @@
+@font-face {
+  font-family: "Aller";
+  src: url(assets/AllerDisplay.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.shop .letter-square {
+  cursor: grab;
+}
+
+body {
+  background: #F0EBE3;
+  margin: 0;
+  color: #555;
+  font-family: Aller;
+  user-select: none;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  margin: 0;
+  padding-top: 8px;
+}
+
+.green {
+  color: #7D9D9C;
+}
+
+.container {
+  width: 50%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.grid {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.square {
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #E4DCCF;
+  width: calc(14.28% - 8px);
+  margin: 4px;
+  height: 0;
+  padding-top: calc(14.28% - 8px);
+  float: left;
+}
+
+.letter-square {
+  background: #E4DCCF;
+  border: 4px solid #555;
+  width: 100%;
+  padding-top: calc(100% - 8px);
+  margin: 0;
+  margin-top: -100%;
+  font-size: 56px;
+  color: #555;
+  position: relative;
+  overflow: hidden;
+}
+
+.letter-square.part-of-word {
+  background: white;
+}
+
+.invisible {
+  opacity: 0.25;
+}
+
+.letter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  text-align: center;
+}
+
+.letter-square.double-letter {
+  background: #bde0fe;
+}
+
+.letter-square.double-letter::before {
+  content: "2L";
+  position: absolute;
+  font-size: 12px;
+  color: #555;
+  left: 4px;
+  top: 4px;
+}
+
+.letter-score {
+  position: absolute;
+  font-size: 16px;
+  /*color: #777;*/
+  right: 4px;
+  bottom: 4px;
+}
+
+.refresh {
+  width: calc(100% - 8px);
+  padding: 16px;
+  background: #555;
+  margin-top: 4px;
+  margin-left: 4px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: white;
+  font-family:  "Aller";
+  font-size: 24px;
+  cursor: pointer;
+  border-bottom: 12px solid #404040;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.refresh:active, .refresh.invisible {
+  margin-top: 12px;
+  border-bottom: 4px solid #404040;
+}
+
+.display {
+  width: 100%;
+  float: left;
+}
+
+.display .wrapper {
+  width: 50%;
+  float: left;
+  font-size: 24px;
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+
+.display .wrapper:nth-child(2) {
+  text-align: right;
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: 92%;
+  }
+}
