@@ -231,7 +231,7 @@ function initializeGrid() {
       row.push("");
 
       const square = document.createElement("div");
-      square.classList = "square grid-square";
+      square.classList.add(...["square", "grid-square"]);
       square.id = "grid-" + i + "-" + j;
 
       grid.appendChild(square);
@@ -252,7 +252,7 @@ function initializeShop() {
   const shop = document.querySelector(".shop");
   for (let i = 0; i < shopSize; i++) {
     const square = document.createElement("div");
-    square.classList = "square shop-square";
+    square.classList.add(...["square", "shop-square"]);
     square.id = "shop-" + i;
 
     shop.appendChild(square);
@@ -268,15 +268,15 @@ function updateShop() {
   for (let i = 0; i < shopSize; i++) {
     if (shopState[i] != "") {
       const letter = document.createElement("div");
-      letter.classList = "square letter-square";
+      letter.classList.add(...["square", "letter-square"]);
       letter.draggable = true;
 
       const span = document.createElement("span");
-      span.classList = "letter";
+      span.classList.add("letter");
       span.innerHTML = shopState[i];
 
       const letterScore = document.createElement("span");
-      letterScore.classList = "letter-score";
+      letterScore.classList.add("letter-score");
       letterScore.innerHTML = letterPointsDistribution[shopState[i]][0];
 
       letter.appendChild(span);
