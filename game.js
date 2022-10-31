@@ -65,7 +65,7 @@ let refreshCost = 4;
 function clearTileClasses() {
   const letterSquares = document.querySelectorAll(".grid .letter-square");
   for (const square of letterSquares) {
-    square.className = square.className.replaceAll(" part-of-word", "");
+    square.classList.remove("part-of-word");
   }
 }
 
@@ -77,7 +77,7 @@ function evaluateString(curString, i, j, readHorizontal) {
         ? "#grid-" + i + "-" + (j - 1 - k)
         : "#grid-" + (j - 1 - k) + "-" + i;
       const tile = document.querySelector(tileName);
-      tile.firstChild.className += " part-of-word";
+      tile.firstChild.classList.add("part-of-word");
     }
 
     // evaluate current word score
@@ -160,11 +160,11 @@ function refreshShop(isFree) {
 function dragStart(e) {
   dragged = e.target;
   draggedIndex = dragged.parentNode.id.split("-")[1];
-  dragged.className += " invisible";
+  dragged.classList.add("invisible");
 }
 
 function dragEnd(e) {
-  dragged.className = dragged.className.replace(" invisible", "");
+  dragged.classList.remove("invisible");
   dragged = null;
 }
 
@@ -190,19 +190,19 @@ function closeShopIfBroke() {
   if (bankBalance <= refreshCost) {
     const refreshButton = document.querySelector(".refresh");
     refreshButton.removeEventListener("click", click);
-    refreshButton.className += " invisible";
+    refreshButton.classList.add("invisible");
   }
 
   if (bankBalance <= 0) {
     const letterSquares = document.querySelectorAll(".shop .letter-square");
     for (const square of letterSquares) {
-      square.className += " invisible";
+      square.classList.add("invisible");
     }
   }
 }
 
 function drop(e) {
-  if (e.target.className.includes("grid-square") && bankBalance >= 1) {
+  if (e.target.classList.contains("grid-square") && bankBalance >= 1) {
     bankBalance -= 1;
     dragged.parentNode.removeChild(dragged);
     e.target.appendChild(dragged);
@@ -231,7 +231,7 @@ function initializeGrid() {
       row.push("");
 
       const square = document.createElement("div");
-      square.className = "square grid-square";
+      square.classList = "square grid-square";
       square.id = "grid-" + i + "-" + j;
 
       grid.appendChild(square);
@@ -252,7 +252,7 @@ function initializeShop() {
   const shop = document.querySelector(".shop");
   for (let i = 0; i < shopSize; i++) {
     const square = document.createElement("div");
-    square.className = "square shop-square";
+    square.classList = "square shop-square";
     square.id = "shop-" + i;
 
     shop.appendChild(square);
@@ -268,15 +268,15 @@ function updateShop() {
   for (let i = 0; i < shopSize; i++) {
     if (shopState[i] != "") {
       const letter = document.createElement("div");
-      letter.className = "square letter-square";
+      letter.classList = "square letter-square";
       letter.draggable = true;
 
       const span = document.createElement("span");
-      span.className = "letter";
+      span.classList = "letter";
       span.innerHTML = shopState[i];
 
       const letterScore = document.createElement("span");
-      letterScore.className = "letter-score";
+      letterScore.classList = "letter-score";
       letterScore.innerHTML = letterPointsDistribution[shopState[i]][0];
 
       letter.appendChild(span);
