@@ -1,5 +1,12 @@
 @font-face {
   font-family: "Aller";
+  src: url(assets/Aller_Rg.ttf) format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Aller";
   src: url(assets/AllerDisplay.ttf) format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -22,11 +29,35 @@ h1 {
   text-align: center;
   font-size: 32px;
   margin: 0;
-  padding-top: 8px;
+  padding: 16px 0 12px 0;
 }
 
-.green {
+p {
+  font-weight: 200;
+  font-size: 16px;
+  line-height: 150%;
+  margin: 0;
+  padding: 0 4px;
+  margin-bottom: 16px;
+}
+
+ul {
+  margin: 0;
+  line-height: 150%;
+}
+
+li {
+  list-style: none;
+}
+
+span.two-l, span.three-l,
+span.two-w, span.three-w {
+  font-weight: 200;
+}
+
+span.green {
   color: #7D9D9C;
+  font-weight: 400;
 }
 
 .container {
@@ -34,6 +65,13 @@ h1 {
   max-width: 600px;
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #E4DCCF;
+  margin-bottom: 16px;
 }
 
 .grid {
@@ -118,36 +156,39 @@ h1 {
   top: 0px;
 }
 
-.letter-square.level-1.part-of-word {
-  background: #a9def9;
-}
-
 .letter-square.level-1::before {
   content: "*";
 }
-
-.letter-square.level-2.part-of-word {
-  background: #d0f4de;
-}
-
 .letter-square.level-2::before {
   content: "**";
 }
-
-.letter-square.level-3.part-of-word {
-  background: #ff99c8;
-}
-
 .letter-square.level-3::before {
   content: "***";
 }
-
-.letter-square.level-4.part-of-word {
-  background: #fcf6bd;
-}
-
 .letter-square.level-4::before {
   content: "****";
+}
+.letter-square.level-5::before {
+  content: "*****";
+}
+.letter-square.level-6::before {
+  content: "******";
+}
+.letter-square.level-7::before {
+  content: "*******";
+}
+
+.letter-square.level-1.part-of-word, span.two-l {
+  background: #a9def9;
+}
+.letter-square.level-3.part-of-word, span.three-l {
+  background: #d0f4de;
+}
+.letter-square.level-5.part-of-word, span.two-w {
+  background: #ff99c8;
+}
+.letter-square.level-7.part-of-word, span.three-w {
+  background: #fcf6bd;
 }
 
 .letter-score {

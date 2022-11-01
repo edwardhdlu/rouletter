@@ -107,11 +107,11 @@ function evaluateString(curString, i, j, readHorizontal) {
       let multiplierState = readHorizontal ? boardStateMultipliers[i][j - 1 - k] : boardStateMultipliers[j - 1 - k][i];
       if (multiplierState == 1) {
         letterMultiplier = 2;
-      } else if (multiplierState == 2) {
-        letterMultiplier = 3;
       } else if (multiplierState == 3) {
+        letterMultiplier = 3;
+      } else if (multiplierState == 5) {
         wordMultiplier *= 2;
-      } else if (multiplierState == 4) {
+      } else if (multiplierState == 7) {
         wordMultiplier *= 3;
       }
       score += letterMultiplier * letterPointsDistribution[curString[curString.length - k - 1]][0];
@@ -261,7 +261,7 @@ function isValidLevelUpTarget(e) {
 
     let curLetter = dragged.firstChild.innerHTML;
     if (curLetter == boardState[i][j]) {
-      if (boardStateMultipliers[i][j] <= 3) {
+      if (boardStateMultipliers[i][j] <= 6) {
         boardStateMultipliers[i][j] += 1;
         const square = document.querySelector("#grid-" + i + "-" + j);
         square.firstChild.classList.add("level-" + boardStateMultipliers[i][j])
