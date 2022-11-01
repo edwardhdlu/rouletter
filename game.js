@@ -34,8 +34,9 @@ const letterPointsDistribution = {
   Y: [4, 2],
   Z: [10, 1],
 };
-const randomSeed = "seed123";
-const rng = new Math.seedrandom();
+const date = new Date();
+const seed = date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
+const rng = new Math.seedrandom(seed);
 
 function getRangeMapping() {
   let rangeMapping = [];
@@ -49,14 +50,18 @@ function getRangeMapping() {
 }
 const rangeMapping = getRangeMapping();
 
+const coinAudio = new Audio("assets/coins2.wav");
+const stonesAudio = new Audio("assets/stones.wav");
+
 // GAME STATE
 let shopState = ["A", "E", "I", "O", "U"];
 let boardState = [];
+let boardStateMultipliers = [];
 let dragged = null;
 let draggedIndex = null;
 let scoreValue = 0;
 let bankBalance = 50;
-let refreshCost = 4;
+let refreshCost = 3;
 
 //
 // FUNCTIONS
@@ -64,8 +69,11 @@ let refreshCost = 4;
 
 function clearTileClasses() {
   const letterSquares = document.querySelectorAll(".grid .letter-square");
+  const classNames = ["part-of-word", "h", "v", "ha", "hb", "va", "vb"];
   for (const square of letterSquares) {
-    square.classList.remove("part-of-word");
+    for (const name of classNames) {
+      square.classList.remove(name);
+    }
   }
 }
 
@@ -78,6 +86,17 @@ function evaluateString(curString, i, j, readHorizontal) {
         : "#grid-" + (j - 1 - k) + "-" + i;
       const tile = document.querySelector(tileName);
       tile.firstChild.classList.add("part-of-word");
+
+      let squareClass = readHorizontal ? "h" : "v";
+      tile.firstChild.classList.add(squareClass);
+
+      if (k == curString.length - 1) { 
+        squareClass += "a";
+        tile.firstChild.classList.add(squareClass);
+      } else if (k == 0) {
+        squareClass += "b";
+        tile.firstChild.classList.add(squareClass);
+      }
     }
 
     // evaluate current word score
@@ -114,7 +133,7 @@ function sampleLetter() {
   let x = Math.floor(rng() * rangeMapping[25] + 1);
   let i = 0;
   while (x > rangeMapping[i]) {
-    i += 1;
+    i++;
   }
   return Object.keys(letterPointsDistribution)[i];
 }
@@ -149,8 +168,21 @@ function refreshShop(isFree) {
       square.parentNode.removeChild(square);
     }
 
+    let seen = {};
     for (let i = 0; i < shopSize; i++) {
-      shopState[i] = sampleLetter();
+      let l = sampleLetter();
+      if (!(l in seen)) {
+        seen[l] = 0;
+      }
+
+      // enforce at most two of the same letter
+      // enforce min/max number of vowels?
+      if (seen[l] >= 2) {
+        i--;
+      } else {
+        shopState[i] = l;
+        seen[l]++;
+      }
     }
     updateShop(shopState);
     updateDisplays();
@@ -197,12 +229,15 @@ function closeShopIfBroke() {
     const letterSquares = document.querySelectorAll(".shop .letter-square");
     for (const square of letterSquares) {
       square.classList.add("invisible");
+      square.draggable = false;
     }
   }
 }
 
 function drop(e) {
   if (e.target.classList.contains("grid-square") && bankBalance >= 1) {
+    stonesAudio.play();
+
     bankBalance -= 1;
     dragged.parentNode.removeChild(dragged);
     e.target.appendChild(dragged);
@@ -219,6 +254,8 @@ function drop(e) {
 }
 
 function click(e) {
+  coinAudio.play();
+
   refreshShop();
   closeShopIfBroke();
 }
