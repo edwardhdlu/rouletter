@@ -79,6 +79,10 @@ function clearTileClasses() {
 
 function evaluateString(curString, i, j, readHorizontal) {
   if (enableSet.has(curString.toLowerCase())) {
+
+    let score = 0;
+    let wordMultiplier = 1;
+
     // update style for part of word letters
     for (let k = 0; k < curString.length; k++) {
       const tileName = readHorizontal
@@ -97,14 +101,22 @@ function evaluateString(curString, i, j, readHorizontal) {
         squareClass += "b";
         tile.firstChild.classList.add(squareClass);
       }
-    }
 
-    // evaluate current word score
-    let score = 0;
-    for (const letter of curString) {
-      score += letterPointsDistribution[letter][0];
+      // evaluate current word score
+      let letterMultiplier = 1;
+      let multiplierState = readHorizontal ? boardStateMultipliers[i][j - 1 - k] : boardStateMultipliers[j - 1 - k][i];
+      if (multiplierState == 1) {
+        letterMultiplier = 2;
+      } else if (multiplierState == 2) {
+        letterMultiplier = 3;
+      } else if (multiplierState == 3) {
+        wordMultiplier *= 2;
+      } else if (multiplierState == 4) {
+        wordMultiplier *= 3;
+      }
+      score += letterMultiplier * letterPointsDistribution[curString[curString.length - k - 1]][0];
     }
-    return score;
+    return wordMultiplier * score;
   }
   return 0;
 }
@@ -234,28 +246,74 @@ function closeShopIfBroke() {
   }
 }
 
-function drop(e) {
-  if (e.target.classList.contains("grid-square") && bankBalance >= 1) {
-    stonesAudio.play();
+function isValidLevelUpTarget(e) {
+  let gridSquare = null;
+  if (e.target.classList.contains("letter-square")) {
+    gridSquare = e.target.parentNode;
+  } else if (e.target.classList.contains("letter") || e.target.classList.contains("letter-score")) {
+    gridSquare = e.target.parentNode.parentNode;
+  }
 
-    bankBalance -= 1;
+  if (gridSquare != null) {
+    let coords = gridSquare.id.split("-");
+    let i = coords[1];
+    let j = coords[2];
+
+    let curLetter = dragged.firstChild.innerHTML;
+    if (curLetter == boardState[i][j]) {
+      if (boardStateMultipliers[i][j] <= 3) {
+        boardStateMultipliers[i][j] += 1;
+        const square = document.querySelector("#grid-" + i + "-" + j);
+        square.firstChild.classList.add("level-" + boardStateMultipliers[i][j])
+
+        dragged.parentNode.removeChild(dragged);
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function isValidGridTarget(e) {
+  if (e.target.classList.contains("grid-square")) {
     dragged.parentNode.removeChild(dragged);
     e.target.appendChild(dragged);
-    dragged.draggable = false;
 
     let coords = e.target.id.split("-");
-    updateGameState(coords[1], coords[2]);
+    let i = coords[1];
+    let j = coords[2];
+    boardState[i][j] = dragged.firstChild.innerHTML;
+
+    return true;
+  }
+  return false;
+}
+
+function drop(e) {
+  if (bankBalance >= 1 && (isValidGridTarget(e) || isValidLevelUpTarget(e))) {
+    stonesAudio.play();
+    bankBalance -= 1;
+    dragged.draggable = false;
+    shopState[draggedIndex] = "";
+
+    clearTileClasses();
+    const hScore = evaluateBoardInDirection(true);
+    const vScore = evaluateBoardInDirection(false);
+    scoreValue = hScore + vScore;
+
+    updateDisplays();
 
     if (getShopCount() == 0) {
       refreshShop(true);
     }
     closeShopIfBroke();
+  } else if (bankBalance >= 1)  {
+    
   }
 }
 
 function click(e) {
   coinAudio.play();
-
   refreshShop();
   closeShopIfBroke();
 }
@@ -264,9 +322,10 @@ function initializeGrid() {
   const grid = document.querySelector(".grid");
   for (let i = 0; i < gridSize; i++) {
     let row = [];
+    let mRow = [];
     for (let j = 0; j < gridSize; j++) {
       row.push("");
-
+      mRow.push(0);
       const square = document.createElement("div");
       square.classList.add(...["square", "grid-square"]);
       square.id = "grid-" + i + "-" + j;
@@ -274,6 +333,7 @@ function initializeGrid() {
       grid.appendChild(square);
     }
     boardState.push(row);
+    boardStateMultipliers.push(mRow);
   }
 }
 

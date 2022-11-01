@@ -60,7 +60,7 @@ h1 {
   padding-top: calc(100% - 8px);
   margin: 0;
   margin-top: -100%;
-  font-size: 56px;
+  font-size: 48px;
   color: #555;
   position: relative;
   overflow: hidden;
@@ -109,17 +109,45 @@ h1 {
   text-align: center;
 }
 
-.letter-square.double-letter {
-  background: #bde0fe;
+.letter-square::before {
+  content: "";
+  position: absolute;
+  font-size: 16px;
+  color: #555;
+  left: 2px;
+  top: 0px;
 }
 
-.letter-square.double-letter::before {
-  content: "2L";
-  position: absolute;
-  font-size: 12px;
-  color: #555;
-  left: 4px;
-  top: 4px;
+.letter-square.level-1.part-of-word {
+  background: #a9def9;
+}
+
+.letter-square.level-1::before {
+  content: "*";
+}
+
+.letter-square.level-2.part-of-word {
+  background: #d0f4de;
+}
+
+.letter-square.level-2::before {
+  content: "**";
+}
+
+.letter-square.level-3.part-of-word {
+  background: #ff99c8;
+}
+
+.letter-square.level-3::before {
+  content: "***";
+}
+
+.letter-square.level-4.part-of-word {
+  background: #fcf6bd;
+}
+
+.letter-square.level-4::before {
+  content: "****";
 }
 
 .letter-score {
