@@ -105,11 +105,12 @@ function evaluateString(curString, i, j, readHorizontal) {
       // evaluate current word score
       let letterMultiplier = 1;
       let multiplierState = readHorizontal ? boardStateMultipliers[i][j - 1 - k] : boardStateMultipliers[j - 1 - k][i];
-      if (multiplierState == 1) {
+      console.log(multiplierState);
+      if (multiplierState == 1 || multiplierState == 2) {
         letterMultiplier = 2;
-      } else if (multiplierState == 3) {
+      } else if (multiplierState == 3 || multiplierState == 4) {
         letterMultiplier = 3;
-      } else if (multiplierState == 5) {
+      } else if (multiplierState == 5 || multiplierState == 6) {
         wordMultiplier *= 2;
       } else if (multiplierState == 7) {
         wordMultiplier *= 3;
