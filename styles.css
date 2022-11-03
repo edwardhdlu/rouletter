@@ -154,8 +154,8 @@ span.green {
   position: absolute;
   font-size: 16px;
   color: #555;
-  left: 4px;
-  top: 4px;
+  left: 2px;
+  top: 0px;
 }
 
 .letter-square.level-1::before {
@@ -178,8 +178,8 @@ span.green {
   position: absolute;
   font-size: 16px;
   /*color: #777;*/
-  right: 4px;
-  bottom: 4px;
+  right: 2px;
+  bottom: 0px;
 }
 
 .shop-button {
@@ -201,7 +201,7 @@ span.green {
   float: left;
 }
 
-.shop-button:active, .shop-button.invisible {
+.shop-button:active {
   margin-top: 16px;
   border-bottom: 4px solid #404040;
 }
@@ -214,7 +214,7 @@ span.green {
   border-bottom: 12px solid #5b7978;
 }
 
-.refresh-button:active, .refresh-button.invisible {
+.refresh-button:active {
   border-bottom: 4px solid #5b7978;
 }
 
