@@ -218,11 +218,11 @@ span.green {
 }
 
 .refresh-button {
-  width: calc(85% - 8px);
+  width: calc(60% - 8px);
 }
 
 .shuffle-button {
-  width: calc(15% - 8px);
+  width: calc(40% - 8px);
 }
 
 
