@@ -207,7 +207,7 @@ span.green {
 }
 
 .refresh-button {
-  width: calc(71.43% - 8px);
+  width: calc(71.4% - 8px);
   float: left;
   margin-left: 4px;
   background: #7D9D9C;
@@ -246,7 +246,7 @@ span.green {
   width: 50%;
   float: left;
   font-size: 24px;
-  padding: 8px 0;
+  padding: 8px 4px;
   box-sizing: border-box;
 }
 
