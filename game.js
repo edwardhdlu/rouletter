@@ -35,7 +35,8 @@ const letterPointsDistribution = {
   Z: [10, 1],
 };
 const date = new Date();
-const seed = date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
+const seed =
+  date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
 const rng = new Math.seedrandom(seed);
 
 function getRangeMapping() {
@@ -79,7 +80,6 @@ function clearTileClasses() {
 
 function evaluateString(curString, i, j, readHorizontal) {
   if (enableSet.has(curString.toLowerCase())) {
-
     let score = 0;
     let wordMultiplier = 1;
 
@@ -94,7 +94,7 @@ function evaluateString(curString, i, j, readHorizontal) {
       let squareClass = readHorizontal ? "h" : "v";
       tile.firstChild.classList.add(squareClass);
 
-      if (k == curString.length - 1) { 
+      if (k == curString.length - 1) {
         squareClass += "a";
         tile.firstChild.classList.add(squareClass);
       } else if (k == 0) {
@@ -104,7 +104,9 @@ function evaluateString(curString, i, j, readHorizontal) {
 
       // evaluate current word score
       let letterMultiplier = 1;
-      let multiplierState = readHorizontal ? boardStateMultipliers[i][j - 1 - k] : boardStateMultipliers[j - 1 - k][i];
+      let multiplierState = readHorizontal
+        ? boardStateMultipliers[i][j - 1 - k]
+        : boardStateMultipliers[j - 1 - k][i];
       console.log(multiplierState);
       if (multiplierState == 1 || multiplierState == 2) {
         letterMultiplier = 2;
@@ -115,7 +117,9 @@ function evaluateString(curString, i, j, readHorizontal) {
       } else if (multiplierState == 7) {
         wordMultiplier *= 3;
       }
-      score += letterMultiplier * letterPointsDistribution[curString[curString.length - k - 1]][0];
+      score +=
+        letterMultiplier *
+        letterPointsDistribution[curString[curString.length - k - 1]][0];
     }
     return wordMultiplier * score;
   }
@@ -171,15 +175,17 @@ function updateGameState(i, j) {
   updateDisplays();
 }
 
+function getShopLetterSquareElements() {
+  return document.querySelectorAll(".shop .letter-square");
+}
+
 function refreshShop(isFree) {
   if (isFree || bankBalance >= refreshCost) {
     if (!isFree) {
       bankBalance -= refreshCost;
     }
-    const letterSquares = document.querySelectorAll(".shop .letter-square");
-    for (const square of letterSquares) {
-      square.parentNode.removeChild(square);
-    }
+
+    removeSquaresFromShop();
 
     let seen = {};
     for (let i = 0; i < shopSize; i++) {
@@ -233,13 +239,17 @@ function getShopCount() {
 
 function closeShopIfBroke() {
   if (bankBalance <= refreshCost) {
-    const refreshButton = document.querySelector(".refresh");
-    refreshButton.removeEventListener("click", click);
+    const refreshButton = document.querySelector(".refresh-button");
+    refreshButton.removeEventListener("click", refreshButtonHandler);
     refreshButton.classList.add("invisible");
   }
 
   if (bankBalance <= 0) {
-    const letterSquares = document.querySelectorAll(".shop .letter-square");
+    const shuffleButton = document.querySelector(".shuffle-button");
+    shuffleButton.removeEventListener("click", shuffleButtonHandler);
+    shuffleButton.classList.add("invisible");
+
+    const letterSquares = getShopLetterSquareElements();
     for (const square of letterSquares) {
       square.classList.add("invisible");
       square.draggable = false;
@@ -251,7 +261,10 @@ function isValidLevelUpTarget(e) {
   let gridSquare = null;
   if (e.target.classList.contains("letter-square")) {
     gridSquare = e.target.parentNode;
-  } else if (e.target.classList.contains("letter") || e.target.classList.contains("letter-score")) {
+  } else if (
+    e.target.classList.contains("letter") ||
+    e.target.classList.contains("letter-score")
+  ) {
     gridSquare = e.target.parentNode.parentNode;
   }
 
@@ -265,7 +278,7 @@ function isValidLevelUpTarget(e) {
       if (boardStateMultipliers[i][j] <= 6) {
         boardStateMultipliers[i][j] += 1;
         const square = document.querySelector("#grid-" + i + "-" + j);
-        square.firstChild.classList.add("level-" + boardStateMultipliers[i][j])
+        square.firstChild.classList.add("level-" + boardStateMultipliers[i][j]);
 
         dragged.parentNode.removeChild(dragged);
         return true;
@@ -308,15 +321,31 @@ function drop(e) {
       refreshShop(true);
     }
     closeShopIfBroke();
-  } else if (bankBalance >= 1)  {
-    
+  } else if (bankBalance >= 1) {
   }
 }
 
-function click(e) {
+function refreshButtonHandler(e) {
   coinAudio.play();
   refreshShop();
   closeShopIfBroke();
+}
+
+function shuffleButtonHandler(e) {
+  shopState = shopState
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+  removeSquaresFromShop();
+  updateShop();
+}
+
+function removeSquaresFromShop() {
+  const letterSquares = getShopLetterSquareElements();
+  for (const square of letterSquares) {
+    square.parentNode.removeChild(square);
+  }
 }
 
 function initializeGrid() {
@@ -395,8 +424,10 @@ function initializeStaticHandlers() {
     square.addEventListener("drop", drop);
   }
 
-  const refreshButton = document.querySelector(".refresh");
-  refreshButton.addEventListener("click", click);
+  const refreshButton = document.querySelector(".refresh-button");
+  refreshButton.addEventListener("click", refreshButtonHandler);
+  const shuffleButton = document.querySelector(".shuffle-button");
+  shuffleButton.addEventListener("click", shuffleButtonHandler);
 }
 
 initializeGrid();
