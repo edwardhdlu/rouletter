@@ -55,10 +55,11 @@ const coinAudio = new Audio("assets/coins2.wav");
 const stonesAudio = new Audio("assets/stones.wav");
 
 // GAME STATE
-let shopState = ["A", "E", "I", "O", "U"];
+let shopState = [" ", "A", "E", "I", "O", "U", " "];
 let boardState = [];
 let boardStateMultipliers = [];
 let dragged = null;
+let placed = null;
 let draggedIndex = null;
 let scoreValue = 0;
 let bankBalance = 50;
@@ -69,7 +70,7 @@ let refreshCost = 3;
 //
 
 function clearTileClasses() {
-  const letterSquares = document.querySelectorAll(".grid .letter-square");
+  const letterSquares = document.querySelectorAll(".letter-square");
   const classNames = ["part-of-word", "h", "v", "ha", "hb", "va", "vb"];
   for (const square of letterSquares) {
     for (const name of classNames) {
@@ -81,7 +82,6 @@ function clearTileClasses() {
 function evaluateString(curString, i, j, readHorizontal) {
   if (enableSet.has(curString.toLowerCase())) {
     let score = 0;
-    let wordMultiplier = 1;
 
     // update style for part of word letters
     for (let k = 0; k < curString.length; k++) {
@@ -107,21 +107,16 @@ function evaluateString(curString, i, j, readHorizontal) {
       let multiplierState = readHorizontal
         ? boardStateMultipliers[i][j - 1 - k]
         : boardStateMultipliers[j - 1 - k][i];
-      console.log(multiplierState);
-      if (multiplierState == 1 || multiplierState == 2) {
+      if (multiplierState == 1) {
         letterMultiplier = 2;
-      } else if (multiplierState == 3 || multiplierState == 4) {
+      } else if (multiplierState == 2) {
         letterMultiplier = 3;
-      } else if (multiplierState == 5 || multiplierState == 6) {
-        wordMultiplier *= 2;
-      } else if (multiplierState == 7) {
-        wordMultiplier *= 3;
       }
       score +=
         letterMultiplier *
         letterPointsDistribution[curString[curString.length - k - 1]][0];
     }
-    return wordMultiplier * score;
+    return score;
   }
   return 0;
 }
@@ -203,8 +198,9 @@ function refreshShop(isFree) {
         seen[l]++;
       }
     }
-    updateShop(shopState);
+    updateShop();
     updateDisplays();
+    setUndoButtonValid(false);
   }
 }
 
@@ -216,7 +212,7 @@ function dragStart(e) {
 
 function dragEnd(e) {
   dragged.classList.remove("invisible");
-  dragged = null;
+  // dragged = null;
 }
 
 function dragOver(e) {
@@ -248,6 +244,7 @@ function closeShopIfBroke() {
     const shuffleButton = document.querySelector(".shuffle-button");
     shuffleButton.removeEventListener("click", shuffleButtonHandler);
     shuffleButton.classList.add("invisible");
+    setUndoButtonValid(false);
 
     const letterSquares = getShopLetterSquareElements();
     for (const square of letterSquares) {
@@ -272,15 +269,17 @@ function isValidLevelUpTarget(e) {
     let coords = gridSquare.id.split("-");
     let i = coords[1];
     let j = coords[2];
+    
 
     let curLetter = dragged.firstChild.innerHTML;
     if (curLetter == boardState[i][j]) {
-      if (boardStateMultipliers[i][j] <= 6) {
+      if (boardStateMultipliers[i][j] <= 1) {
         boardStateMultipliers[i][j] += 1;
         const square = document.querySelector("#grid-" + i + "-" + j);
         square.firstChild.classList.add("level-" + boardStateMultipliers[i][j]);
-
         dragged.parentNode.removeChild(dragged);
+        placed = [dragged, i, j];
+
         return true;
       }
     }
@@ -297,6 +296,7 @@ function isValidGridTarget(e) {
     let i = coords[1];
     let j = coords[2];
     boardState[i][j] = dragged.firstChild.innerHTML;
+    placed = [dragged, i, j];
 
     return true;
   }
@@ -314,14 +314,14 @@ function drop(e) {
     const hScore = evaluateBoardInDirection(true);
     const vScore = evaluateBoardInDirection(false);
     scoreValue = hScore + vScore;
-
     updateDisplays();
 
     if (getShopCount() == 0) {
       refreshShop(true);
+    } else {
+      setUndoButtonValid(true);
     }
     closeShopIfBroke();
-  } else if (bankBalance >= 1) {
   }
 }
 
@@ -339,6 +339,47 @@ function shuffleButtonHandler(e) {
 
   removeSquaresFromShop();
   updateShop();
+}
+
+function undoButtonHandler(e) {
+  // update board
+  let i = placed[1];
+  let j = placed[2];
+  if (boardStateMultipliers[i][j] > 0) {
+    const square = document.querySelector("#grid-" + i + "-" + j);
+    square.firstChild.classList.remove("level-" + boardStateMultipliers[i][j]);
+    boardStateMultipliers[i][j]--;
+  } else {
+    boardState[i][j] = "";
+    placed[0].parentNode.removeChild(placed[0]);
+  }
+  bankBalance += 1;
+  placed[0].draggable = true;
+
+  clearTileClasses();
+  const hScore = evaluateBoardInDirection(true);
+  const vScore = evaluateBoardInDirection(false);
+  scoreValue = hScore + vScore;
+  updateDisplays();
+
+  // update shop
+  shopState[shopState.indexOf("")] = placed[0].firstChild.innerHTML;
+  removeSquaresFromShop();
+  updateShop();
+
+  // update button
+  setUndoButtonValid(false);
+}
+
+function setUndoButtonValid(isValid) {
+  const undoButton = document.querySelector(".undo-button");
+  if (isValid) {
+    undoButton.addEventListener("click", undoButtonHandler);
+    undoButton.classList.remove("invisible");
+  } else {
+    undoButton.removeEventListener("click", undoButtonHandler);
+    undoButton.classList.add("invisible");
+  }
 }
 
 function removeSquaresFromShop() {
@@ -428,6 +469,7 @@ function initializeStaticHandlers() {
   refreshButton.addEventListener("click", refreshButtonHandler);
   const shuffleButton = document.querySelector(".shuffle-button");
   shuffleButton.addEventListener("click", shuffleButtonHandler);
+  setUndoButtonValid(false);
 }
 
 initializeGrid();

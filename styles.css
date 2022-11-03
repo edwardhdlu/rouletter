@@ -65,6 +65,8 @@ span.green {
   max-width: 600px;
   margin: 0 auto;
   box-sizing: border-box;
+  overflow: hidden;
+  padding-bottom: 32px;
 }
 
 .divider {
@@ -152,43 +154,24 @@ span.green {
   position: absolute;
   font-size: 16px;
   color: #555;
-  left: 2px;
-  top: 0px;
+  left: 4px;
+  top: 4px;
 }
 
 .letter-square.level-1::before {
-  content: "*";
-}
-.letter-square.level-2::before {
-  content: "**";
-}
-.letter-square.level-3::before {
-  content: "***";
-}
-.letter-square.level-4::before {
-  content: "****";
-}
-.letter-square.level-5::before {
-  content: "*****";
-}
-.letter-square.level-6::before {
-  content: "******";
-}
-.letter-square.level-7::before {
-  content: "*******";
+  content: "2x";
 }
 
-.letter-square.level-1.part-of-word, span.two-l {
+.letter-square.level-2::before {
+  content: "3x";
+}
+
+.letter-square.level-1.part-of-word, span.level-1 {
   background: #a9def9;
 }
-.letter-square.level-3.part-of-word, span.three-l {
-  background: #d0f4de;
-}
-.letter-square.level-5.part-of-word, span.two-w {
+
+.letter-square.level-2.part-of-word, span.level-2 {
   background: #ff99c8;
-}
-.letter-square.level-7.part-of-word, span.three-w {
-  background: #fcf6bd;
 }
 
 .letter-score {
@@ -202,8 +185,8 @@ span.green {
 .shop-button {
   padding: 16px;
   background: #555;
-  margin-top: 4px;
-  margin-left: 4px;
+  margin-top: 8px;
+  margin-left: 8px;
   border: none;
   outline: none;
   border-radius: 4px;
@@ -215,20 +198,43 @@ span.green {
   border-bottom: 12px solid #404040;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+  float: left;
+}
+
+.shop-button:active, .shop-button.invisible {
+  margin-top: 16px;
+  border-bottom: 4px solid #404040;
 }
 
 .refresh-button {
-  width: calc(60% - 8px);
+  width: calc(71.43% - 8px);
+  float: left;
+  margin-left: 4px;
+  background: #7D9D9C;
+  border-bottom: 12px solid #5b7978;
+}
+
+.refresh-button:active, .refresh-button.invisible {
+  border-bottom: 4px solid #5b7978;
+}
+
+.undo-button, .shuffle-button {
+  width: calc(14.28% - 8px);
+  color: #555;
+}
+
+.undo-button {
+  background-image: url("assets/undo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
 }
 
 .shuffle-button {
-  width: calc(40% - 8px);
-}
-
-
-.refresh:active, .refresh.invisible {
-  margin-top: 12px;
-  border-bottom: 4px solid #404040;
+  background-image: url("assets/shuffle.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
 }
 
 .display {
