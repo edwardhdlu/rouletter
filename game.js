@@ -158,18 +158,6 @@ function updateDisplays() {
   scoreDisplay.innerHTML = scoreValue;
 }
 
-function updateGameState(i, j) {
-  shopState[draggedIndex] = "";
-  boardState[i][j] = dragged.firstChild.innerHTML;
-
-  clearTileClasses();
-  const hScore = evaluateBoardInDirection(true);
-  const vScore = evaluateBoardInDirection(false);
-  scoreValue = hScore + vScore;
-
-  updateDisplays();
-}
-
 function getShopLetterSquareElements() {
   return document.querySelectorAll(".shop .letter-square");
 }
@@ -200,7 +188,7 @@ function refreshShop(isFree) {
     }
     updateShop();
     updateDisplays();
-    setUndoButtonValid(false);
+    setButtonValid("undo", false);
   }
 }
 
@@ -235,16 +223,11 @@ function getShopCount() {
 
 function closeShopIfBroke() {
   if (bankBalance <= refreshCost) {
-    const refreshButton = document.querySelector(".refresh-button");
-    refreshButton.removeEventListener("click", refreshButtonHandler);
-    refreshButton.classList.add("invisible");
+    setButtonValid("refresh", false);
   }
 
   if (bankBalance <= 0) {
-    const shuffleButton = document.querySelector(".shuffle-button");
-    shuffleButton.removeEventListener("click", shuffleButtonHandler);
-    shuffleButton.classList.add("invisible");
-    setUndoButtonValid(false);
+    setButtonValid("shuffle", false);
 
     const letterSquares = getShopLetterSquareElements();
     for (const square of letterSquares) {
@@ -319,7 +302,7 @@ function drop(e) {
     if (getShopCount() == 0) {
       refreshShop(true);
     } else {
-      setUndoButtonValid(true);
+      setButtonValid("undo", true);
     }
     closeShopIfBroke();
   }
@@ -367,20 +350,41 @@ function undoButtonHandler(e) {
   removeSquaresFromShop();
   updateShop();
 
-  // update button
-  setUndoButtonValid(false);
+  // update buttons
+  if (bankBalance > refreshCost) {
+    setButtonValid("refresh", true);
+  }
+  if (bankBalance == 1) {
+    setButtonValid("shuffle", true);
+  }
+  setButtonValid("undo", false);
+
 }
 
-function setUndoButtonValid(isValid) {
-  const undoButton = document.querySelector(".undo-button");
+function setButtonValid(buttonName, isValid) {
+  let buttonClass = "";
+  let buttonHandler = null;
+  if (buttonName == "refresh") {
+    buttonClass = ".refresh-button";
+    buttonHandler = refreshButtonHandler;
+  } else if (buttonName == "shuffle") {
+    buttonClass = ".shuffle-button";
+    buttonHandler = shuffleButtonHandler;
+  } else if (buttonName == "undo") {
+    buttonClass = ".undo-button";
+    buttonHandler = undoButtonHandler;
+  }
+
+  const button = document.querySelector(buttonClass);
   if (isValid) {
-    undoButton.addEventListener("click", undoButtonHandler);
-    undoButton.classList.remove("invisible");
+    button.addEventListener("click", buttonHandler);
+    button.classList.remove("invisible");
   } else {
-    undoButton.removeEventListener("click", undoButtonHandler);
-    undoButton.classList.add("invisible");
+    button.removeEventListener("click", buttonHandler);
+    button.classList.add("invisible");
   }
 }
+
 
 function removeSquaresFromShop() {
   const letterSquares = getShopLetterSquareElements();
@@ -465,11 +469,9 @@ function initializeStaticHandlers() {
     square.addEventListener("drop", drop);
   }
 
-  const refreshButton = document.querySelector(".refresh-button");
-  refreshButton.addEventListener("click", refreshButtonHandler);
-  const shuffleButton = document.querySelector(".shuffle-button");
-  shuffleButton.addEventListener("click", shuffleButtonHandler);
-  setUndoButtonValid(false);
+  setButtonValid("refresh", true);
+  setButtonValid("shuffle", true);
+  setButtonValid("undo", false);
 }
 
 initializeGrid();

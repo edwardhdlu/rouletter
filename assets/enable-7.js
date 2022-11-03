@@ -51947,6 +51947,13 @@ const enableList = [
   'zymotic',
   'zymurgy',
   'zyzzyva',
+  // custom words
+  'mcrib',
+  'mcribs',
+  'qi',
+  'larb',
+  'nano',
+  'nanos',
 ];
 
 const enableSet = new Set(enableList);
