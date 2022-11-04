@@ -286,10 +286,11 @@ span.green {
 
   h1 {
     font-size: 3em;
+    font-weight: normal;
   }
 
-  .shop-buttons {
-    margin-top: 16px;
+  .shuffle-button, .undo-button {
+    background-size: 48px;
   }
 
   .letter-square {
@@ -298,5 +299,24 @@ span.green {
 
   .letter-score, .letter-square::before {
     font-size: 0.4em;
+  }
+
+  .shop-button {
+    font-size: 3em;
+    padding: 26px;
+    border-bottom: 18px solid #404040;
+  }
+
+  .shop-button:active {
+    margin-top: 16px;
+    border-bottom: 10px solid #404040;
+  }
+
+  .refresh-button {
+    border-bottom: 18px solid #5b7978;
+  }
+
+  .refresh-button:active {
+    border-bottom: 10px solid #5b7978;
   }
 }
