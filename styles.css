@@ -12,10 +12,6 @@
   font-style: normal;
 }
 
-.shop .letter-square {
-  cursor: grab;
-}
-
 body {
   background: #F0EBE3;
   margin: 0;
@@ -27,14 +23,14 @@ body {
 h1 {
   margin: 0;
   text-align: center;
-  font-size: 32px;
+  font-size: 2em;
   margin: 0;
   padding: 16px 0 12px 0;
 }
 
 p {
   font-weight: 200;
-  font-size: 16px;
+  font-size: 1em;
   line-height: 150%;
   margin: 0;
   padding: 0 4px;
@@ -82,6 +78,20 @@ span.green {
   overflow: hidden;
 }
 
+.shop {
+  overflow: hidden;
+  width: 100%;
+}
+
+.shop .letter-square {
+  cursor: grab;
+}
+
+.shop-buttons {
+  overflow: hidden;
+  width: 100%;
+}
+
 .square {
   box-sizing: border-box;
   border-radius: 8px;
@@ -100,7 +110,7 @@ span.green {
   padding-top: calc(100% - 8px);
   margin: 0;
   margin-top: -100%;
-  font-size: 48px;
+  font-size: 3em;
   color: #555;
   position: relative;
   overflow: hidden;
@@ -152,7 +162,7 @@ span.green {
 .letter-square::before {
   content: "";
   position: absolute;
-  font-size: 16px;
+  font-size: 0.3em;
   color: #555;
   left: 2px;
   top: 0px;
@@ -176,7 +186,7 @@ span.green {
 
 .letter-score {
   position: absolute;
-  font-size: 16px;
+  font-size: 0.3em;
   /*color: #777;*/
   right: 2px;
   bottom: 0px;
@@ -193,7 +203,7 @@ span.green {
   box-sizing: border-box;
   color: white;
   font-family:  "Aller";
-  font-size: 24px;
+  font-size: 1.5em;
   cursor: pointer;
   border-bottom: 12px solid #404040;
   border-bottom-right-radius: 4px;
@@ -245,7 +255,7 @@ span.green {
 .display .wrapper {
   width: 50%;
   float: left;
-  font-size: 24px;
+  font-size: 1.5em;
   padding: 8px 4px;
   box-sizing: border-box;
 }
@@ -256,12 +266,37 @@ span.green {
 
 @media screen and (max-width: 1000px) {
   .container {
-    width: 80%;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .container {
     width: 92%;
+    max-width: none;
+  }
+
+  .shop-button {
+    padding: 32px 16px;
+    touch-action: none;
+  }
+
+  .display .wrapper {
+    font-size: 3em;
+    padding: 32px 0;
+  }
+
+  .instructions, .divider {
+    display: none;
+  }
+
+  h1 {
+    font-size: 3em;
+  }
+
+  .shop-buttons {
+    margin-top: 16px;
+  }
+
+  .letter-square {
+    font-size: 4.5em;
+  }
+
+  .letter-score, .letter-square::before {
+    font-size: 0.4em;
   }
 }
