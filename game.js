@@ -55,7 +55,7 @@ const coinAudio = new Audio("assets/coins2.wav");
 const stonesAudio = new Audio("assets/stones.wav");
 
 // GAME STATE
-let shopState = [" ", "A", "E", "I", "O", "U", " "];
+let shopState = ["", "", "", "", "", "", ""];
 let boardState = [];
 let boardStateMultipliers = [];
 let dragged = null;
@@ -162,9 +162,9 @@ function getShopLetterSquareElements() {
   return document.querySelectorAll(".shop .letter-square");
 }
 
-function refreshShop(isFree) {
-  if (isFree || bankBalance >= refreshCost) {
-    if (!isFree) {
+function refreshShop() {
+  if (getShopCount() == 0 || bankBalance >= refreshCost) {
+    if (getShopCount() > 0) {
       bankBalance -= refreshCost;
     }
 
@@ -232,7 +232,7 @@ function getShopCount() {
 }
 
 function closeShopIfBroke() {
-  if (bankBalance <= refreshCost) {
+  if (bankBalance < refreshCost) {
     setButtonValid("refresh", false);
   }
 
@@ -312,12 +312,11 @@ function drop(e) {
     scoreValue = hScore + vScore;
     updateDisplays();
 
-    if (getShopCount() == 0) {
-      refreshShop(true);
-    } else {
-      setButtonValid("undo", true);
-    }
+    setButtonValid("undo", true);
     closeShopIfBroke();
+    if (getShopCount() == 0 && bankBalance > 0) {
+      setButtonValid("refresh", true);
+    }
   }
 }
 
@@ -364,8 +363,10 @@ function undoButtonHandler(e) {
   updateShop();
 
   // update buttons
-  if (bankBalance > refreshCost) {
+  if (bankBalance >= refreshCost) {
     setButtonValid("refresh", true);
+  } else {
+    setButtonValid("refresh", false);
   }
   if (bankBalance == 1) {
     setButtonValid("shuffle", true);
@@ -443,7 +444,7 @@ function initializeShop() {
     shop.appendChild(square);
   }
 
-  refreshShop(true);
+  refreshShop();
   // updateShop();
   updateDisplays();
 }

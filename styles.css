@@ -25,7 +25,7 @@ h1 {
   text-align: center;
   font-size: 2em;
   margin: 0;
-  padding: 16px 0 12px 0;
+  padding: 16px 0 8px 0;
 }
 
 p {
@@ -62,14 +62,14 @@ span.green {
   margin: 0 auto;
   box-sizing: border-box;
   overflow: hidden;
-  padding-bottom: 32px;
+  padding-bottom: 64px;
 }
 
-.divider {
-  width: 100%;
-  height: 1px;
-  background: #E4DCCF;
-  margin-bottom: 16px;
+.instructions {
+  margin-top: 64px;
+  padding-top: 16px;
+  border-top: 1px solid #E4DCCF;
+  border-bottom: 1px solid #E4DCCF;
 }
 
 .grid {
@@ -108,7 +108,7 @@ span.green {
 }
 
 .grid-square.hovered {
-  background: #bda989;
+  background: #c5b397;
   transition: 0.1s;
 }
 
@@ -312,6 +312,15 @@ span.green {
   h1 {
     font-size: 3em;
     font-weight: normal;
+  }
+
+  b {
+    font-weight: normal;
+  }
+
+  p {
+    line-height: 200%;
+    font-size: 2em;
   }
 
   .shuffle-button, .undo-button {
