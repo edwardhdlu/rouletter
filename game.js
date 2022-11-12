@@ -71,7 +71,7 @@ let refreshCost = 3;
 
 function clearTileClasses() {
   const letterSquares = document.querySelectorAll(".letter-square");
-  const classNames = ["part-of-word", "h", "v", "ha", "hb", "va", "vb"];
+  const classNames = ["part-of-word", "h", "v", "ha", "hb", "va", "vb", "hovered"];
   for (const square of letterSquares) {
     for (const name of classNames) {
       square.classList.remove(name);
@@ -209,6 +209,16 @@ function dragOver(e) {
 
 function dragEnter(e) {
   e.preventDefault();
+  if (e.target.classList.contains("grid-square")) {
+    e.target.classList.add("hovered");
+  } else if (e.target.classList.contains("letter-square") && e.target.firstChild.innerHTML == dragged.firstChild.innerHTML) {
+    e.target.classList.add("hovered");
+  }
+}
+
+function dragLeave(e) {
+  e.preventDefault();
+  e.target.classList.remove("hovered");
 }
 
 function getShopCount() {
@@ -291,6 +301,9 @@ function drop(e) {
     stonesAudio.play();
     bankBalance -= 1;
     dragged.draggable = false;
+    dragged.addEventListener("dragenter", dragEnter);
+    dragged.addEventListener("dragleave", dragLeave);
+    e.target.classList.remove("hovered");
     shopState[draggedIndex] = "";
 
     clearTileClasses();
@@ -465,7 +478,7 @@ function initializeStaticHandlers() {
   for (const square of gridSquares) {
     square.addEventListener("dragover", dragOver);
     square.addEventListener("dragenter", dragEnter);
-    // square.addEventListener('dragleave', dragLeave);
+    square.addEventListener('dragleave', dragLeave);
     square.addEventListener("drop", drop);
   }
 

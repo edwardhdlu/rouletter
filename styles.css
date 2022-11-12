@@ -103,6 +103,15 @@ span.green {
   float: left;
 }
 
+.grid-square {
+  transition: 0.1s;
+}
+
+.grid-square.hovered {
+  background: #bda989;
+  transition: 0.1s;
+}
+
 .letter-square {
   background: #E4DCCF;
   border: 4px solid #555;
@@ -115,6 +124,16 @@ span.green {
   position: relative;
   overflow: hidden;
   box-sizing: initial;
+  transition: 0.1s;
+}
+
+.letter-square span {
+  pointer-events: none;
+}
+
+.shop .letter-square:hover {
+  background: #ebe5db;
+  transition: 0.1s;
 }
 
 .letter-square.part-of-word {
@@ -176,25 +195,23 @@ span.green {
   content: "3x";
 }
 
-.letter-square.level-1.part-of-word, span.level-1 {
+.letter-square.level-1.part-of-word, span.level-1, .letter-square.hovered {
   background: #a9def9;
 }
 
-.letter-square.level-2.part-of-word, span.level-2 {
+.letter-square.level-2.part-of-word, span.level-2, .letter-square.level-1.hovered {
   background: #ff99c8;
 }
 
 .letter-score {
   position: absolute;
   font-size: 0.3em;
-  /*color: #777;*/
   right: 2px;
   bottom: 0px;
 }
 
 .shop-button {
   padding: 16px;
-  background: #555;
   margin-top: 8px;
   margin-left: 8px;
   border: none;
@@ -209,11 +226,17 @@ span.green {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   float: left;
+  transition: 0.1s;
+}
+
+.shop-button:hover {
+  transition: 0.1s;
 }
 
 .shop-button:active {
   margin-top: 16px;
   border-bottom: 4px solid #404040;
+  transition: 0.1s;
 }
 
 .refresh-button {
@@ -224,6 +247,10 @@ span.green {
   border-bottom: 12px solid #5b7978;
 }
 
+.refresh-button:hover {
+  background: #8aa7a6;
+}
+
 .refresh-button:active {
   border-bottom: 4px solid #5b7978;
 }
@@ -231,20 +258,22 @@ span.green {
 .undo-button, .shuffle-button {
   width: calc(14.28% - 8px);
   color: #555;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+  background-color: #555;
+}
+
+.undo-button:hover, .shuffle-button:hover {
+  background-color: #666;
 }
 
 .undo-button {
   background-image: url("assets/undo.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 24px;
 }
 
 .shuffle-button {
   background-image: url("assets/shuffle.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 24px;
 }
 
 .display {
@@ -278,10 +307,6 @@ span.green {
   .display .wrapper {
     font-size: 3em;
     padding: 32px 0;
-  }
-
-  .instructions, .divider {
-    display: none;
   }
 
   h1 {
