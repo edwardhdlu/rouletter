@@ -51,8 +51,10 @@ function getRangeMapping() {
 }
 const rangeMapping = getRangeMapping();
 
-const coinAudio = new Audio("assets/coins2.wav");
-const stonesAudio = new Audio("assets/stones.wav");
+const refreshAudio = new Audio("assets/coins2.wav");
+const dropAudio = new Audio("assets/stones.wav");
+const shuffleAudio = new Audio("assets/tambourine.wav");
+const undoAudio = new Audio("assets/cancel.wav");
 
 // GAME STATE
 let shopState = ["", "", "", "", "", "", ""];
@@ -298,7 +300,7 @@ function isValidGridTarget(e) {
 
 function drop(e) {
   if (bankBalance >= 1 && (isValidGridTarget(e) || isValidLevelUpTarget(e))) {
-    stonesAudio.play();
+    dropAudio.play();
     bankBalance -= 1;
     dragged.draggable = false;
     dragged.addEventListener("dragenter", dragEnter);
@@ -321,12 +323,13 @@ function drop(e) {
 }
 
 function refreshButtonHandler(e) {
-  coinAudio.play();
+  refreshAudio.play();
   refreshShop();
   closeShopIfBroke();
 }
 
 function shuffleButtonHandler(e) {
+  shuffleAudio.play();
   shopState = shopState
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
@@ -337,6 +340,8 @@ function shuffleButtonHandler(e) {
 }
 
 function undoButtonHandler(e) {
+  undoAudio.play();
+
   // update board
   let i = placed[1];
   let j = placed[2];

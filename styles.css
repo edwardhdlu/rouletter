@@ -195,11 +195,11 @@ span.green {
   content: "3x";
 }
 
-.letter-square.level-1.part-of-word, span.level-1, .letter-square.hovered {
+.letter-square.level-1.part-of-word, span.level-1, .letter-square.hovered.part-of-word {
   background: #a9def9;
 }
 
-.letter-square.level-2.part-of-word, span.level-2, .letter-square.level-1.hovered {
+.letter-square.level-2.part-of-word, span.level-2, .letter-square.level-1.hovered.part-of-word {
   background: #ff99c8;
 }
 
