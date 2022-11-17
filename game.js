@@ -52,9 +52,9 @@ function getRangeMapping() {
 const rangeMapping = getRangeMapping();
 
 const audioMapping = {
-  refresh: ["coins2.wav", 0.2],
+  refresh: ["coins2.wav", 0.3],
   drop: ["stones.wav", 1.0],
-  shuffle: ["tambourine.wav", 0.05],
+  shuffle: ["tambourine.wav", 0.04],
   undo: ["cancel.wav", 0.1],
 };
 
