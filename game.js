@@ -51,10 +51,12 @@ function getRangeMapping() {
 }
 const rangeMapping = getRangeMapping();
 
-const refreshAudio = new Audio("assets/coins2.wav");
-const dropAudio = new Audio("assets/stones.wav");
-const shuffleAudio = new Audio("assets/tambourine.wav");
-const undoAudio = new Audio("assets/cancel.wav");
+const audioMapping = {
+  refresh: ["coins2.wav", 0.2],
+  drop: ["stones.wav", 1.0],
+  shuffle: ["tambourine.wav", 0.05],
+  undo: ["cancel.wav", 0.1],
+};
 
 // GAME STATE
 let shopState = ["", "", "", "", "", "", ""];
@@ -70,6 +72,13 @@ let refreshCost = 3;
 //
 // FUNCTIONS
 //
+
+function playAudio(audioName) {
+  let audioPath = "assets/" + audioMapping[audioName][0];
+  let audio = new Audio(audioPath);
+  audio.volume = audioMapping[audioName][1];
+  audio.play();
+}
 
 function clearTileClasses() {
   const letterSquares = document.querySelectorAll(".letter-square");
@@ -300,7 +309,7 @@ function isValidGridTarget(e) {
 
 function drop(e) {
   if (bankBalance >= 1 && (isValidGridTarget(e) || isValidLevelUpTarget(e))) {
-    dropAudio.play();
+    playAudio("drop");
     bankBalance -= 1;
     dragged.draggable = false;
     dragged.addEventListener("dragenter", dragEnter);
@@ -323,13 +332,13 @@ function drop(e) {
 }
 
 function refreshButtonHandler(e) {
-  refreshAudio.play();
+  playAudio("refresh");
   refreshShop();
   closeShopIfBroke();
 }
 
 function shuffleButtonHandler(e) {
-  shuffleAudio.play();
+  playAudio("shuffle");
   shopState = shopState
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
@@ -340,7 +349,7 @@ function shuffleButtonHandler(e) {
 }
 
 function undoButtonHandler(e) {
-  undoAudio.play();
+  playAudio("undo");
 
   // update board
   let i = placed[1];
