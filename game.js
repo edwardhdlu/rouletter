@@ -4,8 +4,6 @@
 // GAME CONSTANTS
 //
 
-const gridSize = 7;
-const shopSize = 7;
 const letterPointsDistribution = {
   A: [1, 9],
   B: [3, 2],
@@ -34,9 +32,6 @@ const letterPointsDistribution = {
   Y: [4, 2],
   Z: [10, 1],
 };
-const date = new Date();
-const seed =
-  date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
 const rng = new Math.seedrandom(seed);
 
 function getRangeMapping() {
@@ -66,8 +61,8 @@ let dragged = null;
 let placed = null;
 let draggedIndex = null;
 let scoreValue = 0;
-let bankBalance = 50;
 let refreshCost = 3;
+let numWords = 0;
 
 //
 // FUNCTIONS
@@ -88,6 +83,7 @@ function clearTileClasses() {
       square.classList.remove(name);
     }
   }
+  numWords = 0;
 }
 
 function evaluateString(curString, i, j, readHorizontal) {
@@ -127,6 +123,7 @@ function evaluateString(curString, i, j, readHorizontal) {
         letterMultiplier *
         letterPointsDistribution[curString[curString.length - k - 1]][0];
     }
+    numWords += 1;
     return score;
   }
   return 0;
@@ -386,7 +383,14 @@ function undoButtonHandler(e) {
     setButtonValid("shuffle", true);
   }
   setButtonValid("undo", false);
+}
 
+function saveLinkHandler(e) {
+  e.preventDefault();
+  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+    const pasteString = "I scored " + scoreValue.toString() + " points from " + numWords.toString() + " words on today's RouLetter" + gameLinkString;
+    navigator.clipboard.writeText(pasteString);
+  }
 }
 
 function setButtonValid(buttonName, isValid) {
@@ -500,6 +504,9 @@ function initializeStaticHandlers() {
   setButtonValid("refresh", true);
   setButtonValid("shuffle", true);
   setButtonValid("undo", false);
+
+  const saveLink = document.querySelector(".save-link");
+  saveLink.addEventListener("click", saveLinkHandler);
 }
 
 initializeGrid();

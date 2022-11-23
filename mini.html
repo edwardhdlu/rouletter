@@ -18,9 +18,9 @@
 
 <body>
 	<div class="title">
-		<h1>ROU<span class="green">LETTER</span></h1>
+		<h1>ROU<span class="green">LETTER</span><span class="mini">MINI</span></h1>
 	</div>
-	<div class="container">
+	<div class="container container-mini">
 		<div class="grid"></div>
 		<div class="display">
 			<div class="wrapper">SCORE:
@@ -48,7 +48,7 @@
 				<b>Tips:</b> If you use all the tiles in your shop, you can refresh for free. You can stack two of the same letter on top of itself for <span class="level-1">2x points</span> and three of the same for <span class="level-2">3x points</span>. Tiles are updated daily.
 			</p>
 			<p>
-				Play the <span class="green">5x5</span> mini version <a href="./mini.html">here</a> or copy your results to clipboard <a class="save-link" href="">here</a>.
+				 Play the <span class="green">7x7</span> full version <a href="./index.html">here</a> or copy your results to clipboard <a class="save-link" href="">here</a>.
 			</p>
 		</div>
 	</div>
@@ -58,12 +58,12 @@
 <script src="assets/seedrandom.min.js" type="text/javascript"></script>
 <script src="assets/enable-7.js" type="text/javascript"></script>
 <script>
-	const gridSize = 7;
-	const shopSize = 7;
-	let bankBalance = 50;
+	const gridSize = 5;
+	const shopSize = 5;
+	let bankBalance = 25;
 	const date = new Date();
-	const seed = date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
-	const gameLinkString = "!\n\nplayrouletter.com";
+	const seed = date.getUTCMonth() + "/" + date.getUTCDate() + "/" + date.getUTCFullYear() + " mini";
+	const gameLinkString = " Mini!\n\nplayrouletter.com/mini.html";
 </script>
 <script src="game.js" type="text/javascript"></script>
 

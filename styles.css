@@ -56,6 +56,10 @@ span.green {
   font-weight: 400;
 }
 
+a {
+  color: #7D9D9C;
+}
+
 .container {
   width: 50%;
   max-width: 600px;
@@ -63,6 +67,10 @@ span.green {
   box-sizing: border-box;
   overflow: hidden;
   padding-bottom: 64px;
+}
+
+.mini {
+  font-size: 0.5em;
 }
 
 .instructions {
@@ -103,6 +111,11 @@ span.green {
   float: left;
 }
 
+.container-mini .square {
+  width: calc(20% - 8px);
+  padding-top: calc(20% - 8px);
+}
+
 .grid-square {
   transition: 0.1s;
 }
@@ -125,6 +138,12 @@ span.green {
   overflow: hidden;
   box-sizing: initial;
   transition: 0.1s;
+}
+
+.container-mini .letter-square {
+  width: calc(100% - 8px);
+  padding-top: calc(100% - 8px);
+  font-size: 4em;
 }
 
 .letter-square span {
@@ -187,6 +206,10 @@ span.green {
   top: 0px;
 }
 
+.container-mini .letter-square::before {
+  font-size: 0.35em;
+}
+
 .letter-square.level-1::before {
   content: "2x";
 }
@@ -208,6 +231,10 @@ span.green {
   font-size: 0.3em;
   right: 2px;
   bottom: 0px;
+}
+
+.container-mini .letter-score {
+  font-size: 0.35em;
 }
 
 .shop-button {
@@ -329,6 +356,10 @@ span.green {
 
   .letter-square {
     font-size: 4.5em;
+  }
+
+  .container-mini .letter-square {
+    font-size: 6.5em;
   }
 
   .letter-score, .letter-square::before {
