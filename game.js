@@ -54,7 +54,7 @@ const audioMapping = {
 };
 
 // GAME STATE
-let shopState = ["", "", "", "", "", "", ""];
+let shopState = ["", "", "", "", "", "", ""].slice(0, shopSize);
 let boardState = [];
 let boardStateMultipliers = [];
 let dragged = null;
